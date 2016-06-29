@@ -19,9 +19,9 @@ public class Dateisystem {
     private String name;
     private String typ;
     private String pfad;
-    ArrayList<Dateisystem> dSsWalk = new ArrayList<>();
-    ArrayList<Dateisystem> dSsGet = new ArrayList<>();
-    ArrayList<String> absoluterPfad = new ArrayList<>();
+    private ArrayList<Dateisystem> dSsWalk = new ArrayList<>();
+    private ArrayList<Dateisystem> dSsGet = new ArrayList<>();
+    private ArrayList<String> absoluterPfad = new ArrayList<>();
 
     // SQL-Variablen
     private Statement st;
@@ -29,30 +29,15 @@ public class Dateisystem {
     private ResultSet rst;
 
     // Konstruktoren
-    public Dateisystem(int id, String name, String typ, String pfad) {
-        this.id = id;
-        this.name = name;
-        this.typ = typ;
-        this.pfad = pfad;
+    public Dateisystem() {
     }
-
+    
     public Dateisystem(String name, String typ, String pfad) {
         this.name = name;
         this.typ = typ;
         this.pfad = pfad;
     }
-
-    public Dateisystem(int id) {
-        this.id = id;
-    }
-
-    public Dateisystem(String name) {
-        this.name = name;
-    }
-
-    public Dateisystem() {
-    }
-
+         
     // Getter
     public int getId() {
         return id;
@@ -68,6 +53,14 @@ public class Dateisystem {
 
     public String getPfad() {
         return pfad;
+    }
+    
+    public ArrayList<Dateisystem> getdSsWalk() {
+        return dSsWalk;
+    }
+    
+    public ArrayList<Dateisystem> getdSsGet() {
+        return dSsGet;
     }
 
     // Setter
@@ -100,7 +93,7 @@ public class Dateisystem {
         try {
             // VERBINDUNG AUFBBAUEN:
             Connection con = MySQLVerbindung.getConnection();
-            Dateisystem check = new Dateisystem(0);
+            Dateisystem check = new Dateisystem();
             for (int i = 0; i < dSsWalk.size(); i++) {
                 if (i == 0) {
                     String sqlFirstInsert = "INSERT INTO dateisystem VALUES (null, ?, ?, null)";

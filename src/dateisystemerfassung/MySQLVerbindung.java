@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class MySQLVerbindung {
     private static final String URL = 
-            "jdbc:mysql://localhost:3306/dateisystemerfassungklon";
+            "jdbc:mysql://localhost:3306/dateisystemerfassung";
     private static final String USER = "root";
     private static final String PASSWORD = "";
 

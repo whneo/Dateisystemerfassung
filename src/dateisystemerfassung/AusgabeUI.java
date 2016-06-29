@@ -51,11 +51,6 @@ public class AusgabeUI extends javax.swing.JFrame {
                 txtUsereingabeMouseClicked(evt);
             }
         });
-        txtUsereingabe.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsereingabeActionPerformed(evt);
-            }
-        });
         txtUsereingabe.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtUsereingabeKeyPressed(evt);
@@ -145,13 +140,13 @@ public class AusgabeUI extends javax.swing.JFrame {
 
     private void btnSuchenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuchenActionPerformed
         String userabfrage = txtUsereingabe.getText();
-        dS.dSsGet.clear();
+        dS.getdSsGet().clear();
         txtAusgabe.setText("");
         txtStatus.setText("");
         dS.getAllByName(userabfrage);
         String ausgabe = "";
-        for (int i = 0; i < dS.dSsGet.size(); i++) {
-            ausgabe = ausgabe.concat(dS.dSsGet.get(i).toString());
+        for (int i = 0; i < dS.getdSsGet().size(); i++) {
+            ausgabe = ausgabe.concat(dS.getdSsGet().get(i).toString());
             txtAusgabe.setText(ausgabe);
         }
         if (ausgabe.equals("")) {
@@ -159,20 +154,16 @@ public class AusgabeUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSuchenActionPerformed
 
-    private void txtUsereingabeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsereingabeActionPerformed
-
-    }//GEN-LAST:event_txtUsereingabeActionPerformed
-
     private void txtUsereingabeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsereingabeKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String userabfrage = txtUsereingabe.getText();
-            dS.dSsGet.clear();
+            dS.getdSsGet().clear();
             txtAusgabe.setText("");
             txtStatus.setText("");
             dS.getAllByName(userabfrage);
             String ausgabe = "";
-            for (int i = 0; i < dS.dSsGet.size(); i++) {
-                ausgabe = ausgabe.concat(dS.dSsGet.get(i).toString());
+            for (int i = 0; i < dS.getdSsGet().size(); i++) {
+                ausgabe = ausgabe.concat(dS.getdSsGet().get(i).toString());
                 txtAusgabe.setText(ausgabe);
             }
             if (ausgabe.equals("")) {

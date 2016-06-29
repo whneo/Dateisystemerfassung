@@ -49,11 +49,6 @@ public class EingabeUI extends javax.swing.JFrame {
                 txtUsereingabeMouseClicked(evt);
             }
         });
-        txtUsereingabe.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsereingabeActionPerformed(evt);
-            }
-        });
         txtUsereingabe.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtUsereingabeKeyPressed(evt);
@@ -122,16 +117,12 @@ public class EingabeUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtUsereingabeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsereingabeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUsereingabeActionPerformed
-
     private void btnSpeichernActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSpeichernActionPerformed
         String usereingabe = txtUsereingabe.getText();
         String[] pfadsegmente = usereingabe.split(Pattern.quote("\\"));
-        dS.dSsWalk.clear();
+        dS.getdSsWalk().clear();
         dS.walk(pfadsegmente[pfadsegmente.length - 1], usereingabe);
-        if (dS.dSsWalk.isEmpty()) {
+        if (dS.getdSsWalk().isEmpty()) {
             txtStatus.setText("Der angegebene Pfad existiert nicht !");
         } else {
             dS.delete();
@@ -150,9 +141,9 @@ public class EingabeUI extends javax.swing.JFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String usereingabe = txtUsereingabe.getText();
             String[] pfadsegmente = usereingabe.split(Pattern.quote("\\"));
-            dS.dSsWalk.clear();
+            dS.getdSsWalk().clear();
             dS.walk(pfadsegmente[pfadsegmente.length - 1], usereingabe);
-            if (dS.dSsWalk.isEmpty()) {
+            if (dS.getdSsWalk().isEmpty()) {
                 txtStatus.setText("Der angegebene Pfad existiert nicht !");
             } else {
                 dS.delete();
