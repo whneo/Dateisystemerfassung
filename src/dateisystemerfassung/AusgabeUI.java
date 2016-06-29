@@ -11,14 +11,14 @@ import java.awt.event.KeyEvent;
  *
  * @author sunny
  */
-public class DateisystemAusgebenUI extends javax.swing.JFrame {
+public class AusgabeUI extends javax.swing.JFrame {
 
     Dateisystem dS = new Dateisystem();
 
     /**
      * Creates new form DateisystemAusgeben
      */
-    public DateisystemAusgebenUI() {
+    public AusgabeUI() {
         initComponents();
     }
 
@@ -38,11 +38,19 @@ public class DateisystemAusgebenUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAusgabe = new javax.swing.JTextArea();
         btnZurueck = new javax.swing.JButton();
+        lblStatus = new javax.swing.JLabel();
+        txtStatus = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lblBeschreibung.setText("Gesuchte(s) Datei oder Verzeichnis eingeben:");
+        lblBeschreibung.setText("Suche nach:");
 
+        txtUsereingabe.setText("Ein leeres Feld gibt das gesamte Dateisystem aus");
+        txtUsereingabe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtUsereingabeMouseClicked(evt);
+            }
+        });
         txtUsereingabe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsereingabeActionPerformed(evt);
@@ -63,6 +71,7 @@ public class DateisystemAusgebenUI extends javax.swing.JFrame {
 
         lblAusgabe.setText("Ausgabe:");
 
+        txtAusgabe.setEditable(false);
         txtAusgabe.setColumns(20);
         txtAusgabe.setRows(5);
         jScrollPane1.setViewportView(txtAusgabe);
@@ -74,25 +83,41 @@ public class DateisystemAusgebenUI extends javax.swing.JFrame {
             }
         });
 
+        lblStatus.setText("Status:");
+        lblStatus.setToolTipText("");
+
+        txtStatus.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(txtUsereingabe, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblBeschreibung)
-                            .addComponent(lblAusgabe))
-                        .addGap(0, 362, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtUsereingabe)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblBeschreibung)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(263, 263, 263)
+                        .addComponent(lblStatus)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(btnSuchen)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(73, 73, 73)
+                        .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
                         .addComponent(btnZurueck)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblAusgabe)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,15 +125,18 @@ public class DateisystemAusgebenUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblBeschreibung, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtUsereingabe, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(txtUsereingabe, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSuchen)
-                    .addComponent(btnZurueck))
+                    .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSuchen, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnZurueck, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(lblAusgabe, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -117,11 +145,17 @@ public class DateisystemAusgebenUI extends javax.swing.JFrame {
 
     private void btnSuchenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuchenActionPerformed
         String userabfrage = txtUsereingabe.getText();
+        dS.dSsGet.clear();
+        txtAusgabe.setText("");
+        txtStatus.setText("");
         dS.getAllByName(userabfrage);
         String ausgabe = "";
         for (int i = 0; i < dS.dSsGet.size(); i++) {
             ausgabe = ausgabe.concat(dS.dSsGet.get(i).toString());
             txtAusgabe.setText(ausgabe);
+        }
+        if (ausgabe.equals("")) {
+            txtStatus.setText("Weder Verzeichnis noch Datei gefunden !");
         }
     }//GEN-LAST:event_btnSuchenActionPerformed
 
@@ -132,19 +166,29 @@ public class DateisystemAusgebenUI extends javax.swing.JFrame {
     private void txtUsereingabeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsereingabeKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String userabfrage = txtUsereingabe.getText();
+            dS.dSsGet.clear();
+            txtAusgabe.setText("");
+            txtStatus.setText("");
             dS.getAllByName(userabfrage);
             String ausgabe = "";
             for (int i = 0; i < dS.dSsGet.size(); i++) {
                 ausgabe = ausgabe.concat(dS.dSsGet.get(i).toString());
                 txtAusgabe.setText(ausgabe);
             }
+            if (ausgabe.equals("")) {
+                txtStatus.setText("Weder Verzeichnis noch Datei gefunden !");
+            }
         }
     }//GEN-LAST:event_txtUsereingabeKeyPressed
 
     private void btnZurueckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZurueckActionPerformed
-        new UserUI().setVisible(true);
+        new StartUI().setVisible(true);
         dispose();
     }//GEN-LAST:event_btnZurueckActionPerformed
+
+    private void txtUsereingabeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtUsereingabeMouseClicked
+        txtUsereingabe.setText("");
+    }//GEN-LAST:event_txtUsereingabeMouseClicked
 
     /**
      * @param args the command line arguments
@@ -163,21 +207,23 @@ public class DateisystemAusgebenUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DateisystemAusgebenUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AusgabeUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DateisystemAusgebenUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AusgabeUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DateisystemAusgebenUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AusgabeUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DateisystemAusgebenUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AusgabeUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DateisystemAusgebenUI().setVisible(true);
+                new AusgabeUI().setVisible(true);
             }
         });
     }
@@ -188,7 +234,9 @@ public class DateisystemAusgebenUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAusgabe;
     private javax.swing.JLabel lblBeschreibung;
+    private javax.swing.JLabel lblStatus;
     private javax.swing.JTextArea txtAusgabe;
+    private javax.swing.JTextField txtStatus;
     private javax.swing.JTextField txtUsereingabe;
     // End of variables declaration//GEN-END:variables
 }

@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 /**
  * @author Rainer 22.06.2016
  */
-public class TestKlasse {
+public class Test {
 
     /**
      * @param args the command line arguments

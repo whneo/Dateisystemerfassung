@@ -12,14 +12,14 @@ import java.util.regex.Pattern;
  *
  * @author sunny
  */
-public class DateisystemErfassenUI extends javax.swing.JFrame {
+public class EingabeUI extends javax.swing.JFrame {
 
     Dateisystem dS = new Dateisystem();
 
     /**
      * Creates new form DateisystemErfassenUI
      */
-    public DateisystemErfassenUI() {
+    public EingabeUI() {
         initComponents();
     }
 
@@ -36,15 +36,27 @@ public class DateisystemErfassenUI extends javax.swing.JFrame {
         txtUsereingabe = new javax.swing.JTextField();
         btnSpeichern = new javax.swing.JButton();
         btnZurueck = new javax.swing.JButton();
+        txtStatus = new javax.swing.JTextField();
+        lblStatus = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblBeschreibung.setText("Zu speichernden Pfad angeben:");
 
         txtUsereingabe.setText("Bsp.: C:\\Windows");
+        txtUsereingabe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtUsereingabeMouseClicked(evt);
+            }
+        });
         txtUsereingabe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsereingabeActionPerformed(evt);
+            }
+        });
+        txtUsereingabe.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtUsereingabeKeyPressed(evt);
             }
         });
 
@@ -62,6 +74,10 @@ public class DateisystemErfassenUI extends javax.swing.JFrame {
             }
         });
 
+        txtStatus.setEditable(false);
+
+        lblStatus.setText("Status:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -72,12 +88,18 @@ public class DateisystemErfassenUI extends javax.swing.JFrame {
                     .addComponent(txtUsereingabe)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblBeschreibung)
-                        .addGap(0, 427, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnSpeichern)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(71, 71, 71)
+                        .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
                         .addComponent(btnZurueck)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(281, 281, 281)
+                .addComponent(lblStatus)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -85,12 +107,16 @@ public class DateisystemErfassenUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblBeschreibung, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtUsereingabe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtUsereingabe, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSpeichern)
-                    .addComponent(btnZurueck))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnSpeichern, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnZurueck, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
@@ -105,15 +131,41 @@ public class DateisystemErfassenUI extends javax.swing.JFrame {
         String[] pfadsegmente = usereingabe.split(Pattern.quote("\\"));
         dS.dSsWalk.clear();
         dS.walk(pfadsegmente[pfadsegmente.length - 1], usereingabe);
-        dS.delete();
-        dS.create();
-        dS.insert();
+        if (dS.dSsWalk.isEmpty()) {
+            txtStatus.setText("Der angegebene Pfad existiert nicht !");
+        } else {
+            dS.delete();
+            dS.create();
+            dS.insert();
+            txtStatus.setText("Das Dateisystem wurde erfolgreich gespeichert");
+        }
     }//GEN-LAST:event_btnSpeichernActionPerformed
 
     private void btnZurueckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZurueckActionPerformed
-        new UserUI().setVisible(true);
+        new StartUI().setVisible(true);
         dispose();
     }//GEN-LAST:event_btnZurueckActionPerformed
+
+    private void txtUsereingabeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsereingabeKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String usereingabe = txtUsereingabe.getText();
+            String[] pfadsegmente = usereingabe.split(Pattern.quote("\\"));
+            dS.dSsWalk.clear();
+            dS.walk(pfadsegmente[pfadsegmente.length - 1], usereingabe);
+            if (dS.dSsWalk.isEmpty()) {
+                txtStatus.setText("Der angegebene Pfad existiert nicht !");
+            } else {
+                dS.delete();
+                dS.create();
+                dS.insert();
+                txtStatus.setText("Das Dateisystem wurde erfolgreich gespeichert");
+            }
+        }
+    }//GEN-LAST:event_txtUsereingabeKeyPressed
+
+    private void txtUsereingabeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtUsereingabeMouseClicked
+        txtUsereingabe.setText("");
+    }//GEN-LAST:event_txtUsereingabeMouseClicked
 
     /**
      * @param args the command line arguments
@@ -132,20 +184,21 @@ public class DateisystemErfassenUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DateisystemErfassenUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EingabeUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DateisystemErfassenUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EingabeUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DateisystemErfassenUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EingabeUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DateisystemErfassenUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EingabeUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DateisystemErfassenUI().setVisible(true);
+                new EingabeUI().setVisible(true);
             }
         });
     }
@@ -154,6 +207,8 @@ public class DateisystemErfassenUI extends javax.swing.JFrame {
     private javax.swing.JButton btnSpeichern;
     private javax.swing.JButton btnZurueck;
     private javax.swing.JLabel lblBeschreibung;
+    private javax.swing.JLabel lblStatus;
+    private javax.swing.JTextField txtStatus;
     private javax.swing.JTextField txtUsereingabe;
     // End of variables declaration//GEN-END:variables
 }

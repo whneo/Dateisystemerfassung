@@ -29,15 +29,22 @@
                   <Component id="txtUsereingabe" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="lblBeschreibung" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="427" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="btnSpeichern" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
+                      <Component id="txtStatus" min="-2" pref="278" max="-2" attributes="0"/>
+                      <EmptySpace pref="87" max="32767" attributes="0"/>
                       <Component id="btnZurueck" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="281" max="-2" attributes="0"/>
+              <Component id="lblStatus" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -47,13 +54,18 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="lblBeschreibung" min="-2" pref="25" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="txtUsereingabe" min="-2" max="-2" attributes="0"/>
+              <Component id="txtUsereingabe" min="-2" pref="28" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnSpeichern" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnZurueck" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Component id="lblStatus" min="-2" pref="25" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btnSpeichern" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                      <Component id="btnZurueck" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="txtStatus" alignment="0" min="-2" pref="28" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="12" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -69,7 +81,9 @@
         <Property name="text" type="java.lang.String" value="Bsp.: C:\u005cWindows" containsInvalidXMLChars="true"/>
       </Properties>
       <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txtUsereingabeMouseClicked"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtUsereingabeActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUsereingabeKeyPressed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnSpeichern">
@@ -87,6 +101,16 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnZurueckActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtStatus">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblStatus">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Status:"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
