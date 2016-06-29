@@ -121,12 +121,12 @@ public class EingabeUI extends javax.swing.JFrame {
         String usereingabe = txtUsereingabe.getText();
         String[] pfadsegmente = usereingabe.split(Pattern.quote("\\"));
         dS.getdSsWalk().clear();
-        dS.walk(pfadsegmente[pfadsegmente.length - 1], usereingabe);
+        dS.fileSystemReader(pfadsegmente[pfadsegmente.length - 1], usereingabe);
         if (dS.getdSsWalk().isEmpty()) {
             txtStatus.setText("Der angegebene Pfad existiert nicht !");
         } else {
-            dS.delete();
-            dS.create();
+            dS.dbTableDelete();
+            dS.dbTableCreate();
             dS.insert();
             txtStatus.setText("Das Dateisystem wurde erfolgreich gespeichert");
         }
@@ -142,12 +142,12 @@ public class EingabeUI extends javax.swing.JFrame {
             String usereingabe = txtUsereingabe.getText();
             String[] pfadsegmente = usereingabe.split(Pattern.quote("\\"));
             dS.getdSsWalk().clear();
-            dS.walk(pfadsegmente[pfadsegmente.length - 1], usereingabe);
+            dS.fileSystemReader(pfadsegmente[pfadsegmente.length - 1], usereingabe);
             if (dS.getdSsWalk().isEmpty()) {
                 txtStatus.setText("Der angegebene Pfad existiert nicht !");
             } else {
-                dS.delete();
-                dS.create();
+                dS.dbTableDelete();
+                dS.dbTableCreate();
                 dS.insert();
                 txtStatus.setText("Das Dateisystem wurde erfolgreich gespeichert");
             }

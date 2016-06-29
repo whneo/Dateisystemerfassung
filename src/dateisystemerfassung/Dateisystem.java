@@ -81,17 +81,16 @@ public class Dateisystem {
     }
 
     // Methoden
-    // toString-Methode
+    // ToString-Methode
     @Override
     public String toString() {
         return "id = " + id + "\n" + "name = " + name + "\n" + "typ = "
                 + typ + "\n" + "pfad = " + pfad + "\n" + "\n";
     }
 
-    // insert-Methode
+    // Speichern in der Datenbank
     public void insert() {
         try {
-            // VERBINDUNG AUFBBAUEN:
             Connection con = MySQLVerbindung.getConnection();
             Dateisystem check = new Dateisystem();
             for (int i = 0; i < dSsWalk.size(); i++) {
@@ -144,7 +143,55 @@ public class Dateisystem {
         }
     }
 
-    // getAll-Methode
+    // Tabelle in der Datenbank löschen
+    public void dbTableDelete() {
+        try {
+            Connection con = MySQLVerbindung.getConnection();
+            String sql = "DROP TABLE dateisystem";
+            st = con.createStatement();
+            st.executeUpdate(sql);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    // Tabelle in der Datenbank erstellen
+    public void dbTableCreate() {
+        try {
+            Connection con = MySQLVerbindung.getConnection();
+            String sql = "CREATE TABLE dateisystem (ID int(11) NOT NULL "
+                    + "AUTO_INCREMENT, Name varchar(255) DEFAULT NULL, Typ "
+                    + "enum('Datei','Verzeichnis') DEFAULT NULL, Pfad int(11) "
+                    + "DEFAULT NULL, PRIMARY KEY (`ID`), FOREIGN KEY (`Pfad`) "
+                    + "REFERENCES `dateisystem` (`ID`))";
+            st = con.createStatement();
+            st.executeUpdate(sql);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    // Ausgabe aus der Datenbank anhand der Usersuchanfrage
     public ArrayList<Dateisystem> getAllByName(String userabfrage) {
         try {
             Connection con = MySQLVerbindung.getConnection();
@@ -184,6 +231,8 @@ public class Dateisystem {
         return dSsGet;
     }
 
+    /* Fremdschlüssel-ID aus der Datenbank in String umwandeln um den Pfad 
+       ausgeben zu können */
     public ArrayList<String> getPfadById(int pfad) {
         String pfadsegment = null;
         try {
@@ -222,70 +271,39 @@ public class Dateisystem {
         }
         return absoluterPfad;
     }
-
-    // delete-Methode
-    public void delete() {
-        try {
-            Connection con = MySQLVerbindung.getConnection();
-            String sql = "DROP TABLE dateisystem";
-            st = con.createStatement();
-            st.executeUpdate(sql);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        } finally {
-            try {
-                if (st != null) {
-                    st.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    // create-Methode
-    public void create() {
-        try {
-            Connection con = MySQLVerbindung.getConnection();
-            String sql = "CREATE TABLE dateisystem (ID int(11) NOT NULL "
-                    + "AUTO_INCREMENT, Name varchar(255) DEFAULT NULL, Typ "
-                    + "enum('Datei','Verzeichnis') DEFAULT NULL, Pfad int(11) "
-                    + "DEFAULT NULL, PRIMARY KEY (`ID`), FOREIGN KEY (`Pfad`) "
-                    + "REFERENCES `dateisystem` (`ID`))";
-            st = con.createStatement();
-            st.executeUpdate(sql);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        } finally {
-            try {
-                if (st != null) {
-                    st.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-                ex.printStackTrace();
-            }
-        }
-    }
-
+    
     // Methode zum auslesen des Dateisystems
-    public void walk(String rootVerzeichnis, String path) {
+    /* Übergabeparameter (Ausgehendes Verzeichnis, absoluter Pfad zum 
+       ausgehenden Verzeichnis) */
+    public void fileSystemReader(String rootVerzeichnis, String path) {
+        // Das Objekt root beinhaltet den absoluten Pfad des zu durchsuchenden Verzeichnis
         File root = new File(path);
+        // Das Array list beinhaltet, dank der Methode listFiles, alle Dateien und Verzeichnisse die im 
+        // zu durchsuchenden Verzeichnis zu finden waren
         File[] list = root.listFiles();
+        // Diese if-Anweisung testet, ob das Array list gefüllt ist oder nicht.
+        // Wenn nicht wird die Methode fileSystemReader hier beendet, ansonsten
+        // läuft sie weiter zur else if-Anweisung
         if (list == null) {
-            return;
-        } else if (dSsWalk.isEmpty()) {
+            return;    
+        } 
+        // Diese else if-Anweisung überprüft ob die ArrayList dSsWalk leer ist.
+        // Wenn ja, dann wird der Code in der else if-Anweisung fortgeführt,
+        // ansonsten läuft die Methode weiter zur else-Anweisung
+        else if (dSsWalk.isEmpty()) {
+            // Ein neues Objekt vom Typ Dateisystem wird mittels eines Konstruktors erstellt
+            // Es beinhaltet den Namen des zu durchsuchenden Verzeichnis, die 
+            // Typbezeichnung Verzeichnis und als übergeordneten Pfad wird null(engl.)
+            // als Platzhalter für nichts angegeben.
             Dateisystem dS = new Dateisystem(rootVerzeichnis, "Verzeichnis", null);
+            // Das Objekt wird in die ArrayList dSsWalk gespeichert.
             dSsWalk.add(dS);
             for (File list1 : list) {
                 String[] pfadsegmente = list1.getAbsolutePath().split(Pattern.quote("\\"));
                 if (list1.isDirectory()) {
                     dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Verzeichnis", rootVerzeichnis);
                     dSsWalk.add(dS);
-                    walk(pfadsegmente[pfadsegmente.length - 1], list1.getAbsolutePath());
+                    fileSystemReader(pfadsegmente[pfadsegmente.length - 1], list1.getAbsolutePath());
                 } else {
                     typ = "Datei";
                     dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Datei", rootVerzeichnis);
@@ -299,7 +317,7 @@ public class Dateisystem {
                 if (list1.isDirectory()) {
                     dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Verzeichnis", rootVerzeichnis);
                     dSsWalk.add(dS);
-                    walk(pfadsegmente[pfadsegmente.length - 1], list1.getAbsolutePath());
+                    fileSystemReader(pfadsegmente[pfadsegmente.length - 1], list1.getAbsolutePath());
                 } else {
                     typ = "Datei";
                     dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Datei", rootVerzeichnis);
