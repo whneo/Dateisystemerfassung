@@ -287,12 +287,12 @@ public class Dateisystem {
         } else if (dSsWalk.isEmpty()) {
             Dateisystem dS = new Dateisystem(rootVerzeichnis, "Verzeichnis", null);
             dSsWalk.add(dS);
-            for (int i = 0; i < list.length; i++) {
-                String[] pfadsegmente = list[i].getAbsolutePath().split(Pattern.quote("\\"));
-                if (list[i].isDirectory()) {
+            for (File list1 : list) {
+                String[] pfadsegmente = list1.getAbsolutePath().split(Pattern.quote("\\"));
+                if (list1.isDirectory()) {
                     dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Verzeichnis", rootVerzeichnis);
                     dSsWalk.add(dS);
-                    walk(pfadsegmente[pfadsegmente.length - 1], list[i].getAbsolutePath());
+                    walk(pfadsegmente[pfadsegmente.length - 1], list1.getAbsolutePath());
                 } else {
                     typ = "Datei";
                     dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Datei", rootVerzeichnis);
@@ -300,13 +300,13 @@ public class Dateisystem {
                 }
             }
         } else {
-            for (int i = 0; i < list.length; i++) {
-                String[] pfadsegmente = list[i].getAbsolutePath().split(Pattern.quote("\\"));
+            for (File list1 : list) {
+                String[] pfadsegmente = list1.getAbsolutePath().split(Pattern.quote("\\"));
                 Dateisystem dS;
-                if (list[i].isDirectory()) {
+                if (list1.isDirectory()) {
                     dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Verzeichnis", rootVerzeichnis);
                     dSsWalk.add(dS);
-                    walk(pfadsegmente[pfadsegmente.length - 1], list[i].getAbsolutePath());
+                    walk(pfadsegmente[pfadsegmente.length - 1], list1.getAbsolutePath());
                 } else {
                     typ = "Datei";
                     dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Datei", rootVerzeichnis);
@@ -315,45 +315,4 @@ public class Dateisystem {
             }
         }
     }
-
-//    public void walk(String rootVerzeichnis, String path) {
-//        File root = new File(path);
-//        File[] list = root.listFiles();
-//        if (dSsWalk.isEmpty()) {
-//            Dateisystem dS = new Dateisystem(rootVerzeichnis, "Verzeichnis", null);
-//            dSsWalk.add(dS);
-//            if (list == null) {
-//                return;
-//            } else {
-//                for (int i = 0; i < list.length; i++) {
-//                    String[] pfadsegmente = list[i].getAbsolutePath().split(Pattern.quote("\\"));
-//                    if (list[i].isDirectory()) {
-//                        dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Verzeichnis", rootVerzeichnis);
-//                        dSsWalk.add(dS);
-//                        walk(pfadsegmente[pfadsegmente.length - 1], list[i].getAbsolutePath());
-//                    } else {
-//                        typ = "Datei";
-//                        dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Datei", rootVerzeichnis);
-//                        dSsWalk.add(dS);
-//                    }
-//                }
-//            }
-//        } else if (list == null) {
-//            return;
-//        } else {
-//            for (int i = 0; i < list.length; i++) {
-//                String[] pfadsegmente = list[i].getAbsolutePath().split(Pattern.quote("\\"));
-//                Dateisystem dS;
-//                if (list[i].isDirectory()) {
-//                    dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Verzeichnis", rootVerzeichnis);
-//                    dSsWalk.add(dS);
-//                    walk(pfadsegmente[pfadsegmente.length - 1], list[i].getAbsolutePath());
-//                } else {
-//                    typ = "Datei";
-//                    dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Datei", rootVerzeichnis);
-//                    dSsWalk.add(dS);
-//                }
-//            }
-//        }
-//    }
 }
