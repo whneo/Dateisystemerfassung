@@ -23,21 +23,58 @@ public class UserUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnErfassen = new javax.swing.JButton();
+        btnDurchsuchen = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        btnErfassen.setText("Dateisystem erfassen");
+        btnErfassen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnErfassenActionPerformed(evt);
+            }
+        });
+
+        btnDurchsuchen.setText("Dateisystem durchsuchen");
+        btnDurchsuchen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDurchsuchenActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnErfassen)
+                .addGap(18, 18, 18)
+                .addComponent(btnDurchsuchen)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnErfassen)
+                    .addComponent(btnDurchsuchen))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnErfassenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnErfassenActionPerformed
+        new DateisystemErfassenUI().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnErfassenActionPerformed
+
+    private void btnDurchsuchenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDurchsuchenActionPerformed
+        new DateisystemAusgebenUI().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnDurchsuchenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -75,5 +112,7 @@ public class UserUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDurchsuchen;
+    private javax.swing.JButton btnErfassen;
     // End of variables declaration//GEN-END:variables
 }
