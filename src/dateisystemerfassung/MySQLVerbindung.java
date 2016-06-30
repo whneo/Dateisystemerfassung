@@ -9,7 +9,7 @@ import java.sql.SQLException;
  * 22.06.2016
  */
 
-public class MySQLVerbindung {
+public class MySQLVerbindung {   
     private static final String URL = 
             "jdbc:mysql://localhost:3306/dateisystemerfassung";
     private static final String USER = "root";
