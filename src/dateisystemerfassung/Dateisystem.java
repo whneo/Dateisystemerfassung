@@ -147,54 +147,6 @@ public class Dateisystem {
         }
     }
 
-    // Tabelle in der Datenbank löschen
-    public void dbTableDelete() {
-        try {
-            Connection con = MySQLVerbindung.getConnection();
-            String sql = "DROP TABLE dateisystem";
-            st = con.createStatement();
-            st.executeUpdate(sql);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        } finally {
-            try {
-                if (st != null) {
-                    st.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    // Tabelle in der Datenbank erstellen
-    public void dbTableCreate() {
-        try {
-            Connection con = MySQLVerbindung.getConnection();
-            String sql = "CREATE TABLE dateisystem (ID int(11) NOT NULL "
-                    + "AUTO_INCREMENT, Name varchar(255) DEFAULT NULL, Typ "
-                    + "enum('Datei','Verzeichnis') DEFAULT NULL, Pfad int(11) "
-                    + "DEFAULT NULL, PRIMARY KEY (`ID`), FOREIGN KEY (`Pfad`) "
-                    + "REFERENCES `dateisystem` (`ID`))";
-            st = con.createStatement();
-            st.executeUpdate(sql);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        } finally {
-            try {
-                if (st != null) {
-                    st.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-                ex.printStackTrace();
-            }
-        }
-    }
-
     // Ausgabe aus der Datenbank anhand der Usersuchanfrage
     public ArrayList<Dateisystem> getAllByName(String userabfrage) {
         try {

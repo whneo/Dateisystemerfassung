@@ -125,8 +125,8 @@ public class EingabeUI extends javax.swing.JFrame {
         if (dS.getdSsWalk().isEmpty()) {
             txtStatus.setText("Der angegebene Pfad existiert nicht !");
         } else {
-            dS.dbTableDelete();
-            dS.dbTableCreate();
+            MySQLVerbindung.dropTable();
+            MySQLVerbindung.createTable();
             dS.insert();
             txtStatus.setText("Das Dateisystem wurde erfolgreich gespeichert");
         }
@@ -146,8 +146,8 @@ public class EingabeUI extends javax.swing.JFrame {
             if (dS.getdSsWalk().isEmpty()) {
                 txtStatus.setText("Der angegebene Pfad existiert nicht !");
             } else {
-                dS.dbTableDelete();
-                dS.dbTableCreate();
+                MySQLVerbindung.dropTable();
+                MySQLVerbindung.createTable();
                 dS.insert();
                 txtStatus.setText("Das Dateisystem wurde erfolgreich gespeichert");
             }
