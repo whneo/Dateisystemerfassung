@@ -31,13 +31,13 @@ public class Dateisystem {
     // Konstruktoren
     public Dateisystem() {
     }
-    
+
     public Dateisystem(String name, String typ, String pfad) {
         this.name = name;
         this.typ = typ;
         this.pfad = pfad;
     }
-         
+
     // Getter
     public int getId() {
         return id;
@@ -54,11 +54,11 @@ public class Dateisystem {
     public String getPfad() {
         return pfad;
     }
-    
+
     public ArrayList<Dateisystem> getdSsWalk() {
         return dSsWalk;
     }
-    
+
     public ArrayList<Dateisystem> getdSsGet() {
         return dSsGet;
     }
@@ -97,7 +97,7 @@ public class Dateisystem {
                 if (i == 0) {
                     String sqlFirstInsert = "INSERT INTO dateisystem VALUES "
                             + "(null, ?, ?, null)";
-                    pst = con.prepareStatement(sqlFirstInsert, 
+                    pst = con.prepareStatement(sqlFirstInsert,
                             PreparedStatement.RETURN_GENERATED_KEYS);
                     pst.setString(1, dSsWalk.get(i).getName());
                     pst.setString(2, dSsWalk.get(i).getTyp());
@@ -117,7 +117,7 @@ public class Dateisystem {
                     }
                     String sqlInsert = "INSERT INTO dateisystem VALUES "
                             + "(null, ?, ?, ?)";
-                    pst = con.prepareStatement(sqlInsert, 
+                    pst = con.prepareStatement(sqlInsert,
                             PreparedStatement.RETURN_GENERATED_KEYS);
                     pst.setString(1, dSsWalk.get(i).getName());
                     pst.setString(2, dSsWalk.get(i).getTyp());
@@ -228,110 +228,142 @@ public class Dateisystem {
         }
         return absoluterPfad;
     }
-    
+
     // Methode zum auslesen des Dateisystems
-    /* Übergabeparameter (Ausgehendes Verzeichnis, absoluter Pfad zum 
-       ausgehenden Verzeichnis) */
     public void fileSystemReader(String rootVerzeichnis, String path) {
-        /* Das Objekt root beinhaltet den absoluten Pfad des zu durchsuchenden 
-        Verzeichnis */
         File root = new File(path);
-        /* Das Array list beinhaltet, dank der Methode listFiles, alle Dateien 
-        und Verzeichnisse die im zu durchsuchenden Verzeichnis zu finden waren*/
         File[] list = root.listFiles();
-        /* Diese if-Anweisung testet, ob das Array list gefüllt ist oder nicht.
-        Wenn nicht wird die Methode fileSystemReader hier beendet, ansonsten
-        läuft sie weiter zur else if-Anweisung */
         if (list == null) {
-            return;    
-        } 
-        /* Diese else if-Anweisung überprüft, ob die ArrayList dSsWalk leer ist.
-        Wenn ja, dann wird der Code in der else if-Anweisung fortgeführt,
-        ansonsten läuft die Methode weiter zur else-Anweisung */
-        else if (dSsWalk.isEmpty()) {
-            /* Ein neues Objekt vom Typ Dateisystem wird mittels eines 
-            Konstruktors erstellt. Es beinhaltet den Namen des zu durchsuchenden
-            Verzeichnis, die Typbezeichnung Verzeichnis und als übergeordneten 
-            Pfad wird null(engl.) als Platzhalter für nichts angegeben. */
+            return;
+        } else if (dSsWalk.isEmpty()) {
             Dateisystem dS = new Dateisystem(rootVerzeichnis,
                     "Verzeichnis", null);
-            // Das Objekt wird in die ArrayList dSsWalk gespeichert.
             dSsWalk.add(dS);
-            // Schleife, die jedes Element aus dem Array list durchläuft
             for (File list1 : list) {
-                /* Für das aktuelle Element wird der absolute Pfad an dem 
-                Trennzeichen "\" zerlegt und jeder Teil wird ein Element des
-                Arrays pfadsegmente */
                 String[] pfadsegmente = list1.getAbsolutePath().split(
                         Pattern.quote("\\"));
-                /* In der if-Anweisung wird geprüft, ob es sich bei dem 
-                aktuellen Element um ein Verzeichnis handelt. Wenn ja, wird der
-                nachfolgende Code ausgeführt, ansonsten läuft die Methode weiter
-                zur else-Anweisung */
                 if (list1.isDirectory()) {
-                    /* Es wird ein neues Objekt erstellt und mit den Parametern
-                    Name, Typ, Pfad befüllt */
-                    dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], 
+                    dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1],
                             "Verzeichnis", rootVerzeichnis);
-                    // Das Objekt wird in die ArrayList dSsWalk gepackt
                     dSsWalk.add(dS);
-                    /* Hier ruft sich die eigentliche Methode erneut selbst auf,
-                    da in dem Verzeichnis ja weitere Dateien oder Verzeichnisse
-                    drin sein können, die erfasst werden müssen */
-                    fileSystemReader(pfadsegmente[pfadsegmente.length - 1], 
+                    fileSystemReader(pfadsegmente[pfadsegmente.length - 1],
                             list1.getAbsolutePath());
-                } 
-                /* Ist das aktuelle Element eine Datei wird folgender Code 
-                ausgeführt */
-                else {
-                    /* Es wird ein neues Objekt erstellt und mit den Parametern
-                    Name, Typ, Pfad befüllt */ 
-                    dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], 
+                } else {
+                    dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1],
                             "Datei", rootVerzeichnis);
-                    // Das Objekt wird in die ArrayList dSsWalk gepackt
                     dSsWalk.add(dS);
                 }
             }
-        } 
-        /* Die else-Anweisung wird ausgeführt,wenn weder das Array list noch die
-        ArrayList dSsWalk leer sind */
-        else {
-            // Schleife, die jedes Element aus dem Array list durchläuft
+        } else {
             for (File list1 : list) {
-                /* Für das aktuelle Element wird der absolute Pfad an dem 
-                Trennzeichen "\" zerlegt und jeder Teil wird ein Element des
-                Arrays pfadsegmente */
                 String[] pfadsegmente = list1.getAbsolutePath().split(
                         Pattern.quote("\\"));
-                /* In der if-Anweisung wird geprüft, ob es sich bei dem 
-                aktuellen Element um ein Verzeichnis handelt. Wenn ja, wird der
-                nachfolgende Code ausgeführt, ansonsten läuft die Methode weiter
-                zur else-Anweisung */
                 if (list1.isDirectory()) {
-                    /* Es wird ein neues Objekt erstellt und mit den Parametern
-                    Name, Typ, Pfad befüllt */
-                    Dateisystem dS = new Dateisystem(pfadsegmente[
-                            pfadsegmente.length - 1], "Verzeichnis", 
+                    Dateisystem dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Verzeichnis",
                             rootVerzeichnis);
-                    // Das Objekt wird in die ArrayList dSsWalk gepackt
                     dSsWalk.add(dS);
-                    /* Hier ruft sich die eigentliche Methode erneut selbst auf,
-                    da in dem Verzeichnis ja weitere Dateien oder Verzeichnisse
-                    drin sein können, die erfasst werden müssen */
-                    fileSystemReader(pfadsegmente[pfadsegmente.length - 1], 
+                    fileSystemReader(pfadsegmente[pfadsegmente.length - 1],
                             list1.getAbsolutePath());
-                } 
-                /* Ist das aktuelle Element eine Datei wird folgender Code 
-                ausgeführt */
-                else {
-                    /* Es wird ein neues Objekt erstellt und mit den Parametern
-                    Name, Typ, Pfad befüllt */
-                    Dateisystem dS = new Dateisystem(pfadsegmente[
-                            pfadsegmente.length - 1], "Datei", rootVerzeichnis);
-                    // Das Objekt wird in die ArrayList dSsWalk gepackt
+                } else {
+                    Dateisystem dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Datei", rootVerzeichnis);
                     dSsWalk.add(dS);
                 }
             }
         }
     }
+    
+//    /* Übergabeparameter (Ausgehendes Verzeichnis, absoluter Pfad zum 
+//       ausgehenden Verzeichnis) */
+//    public void fileSystemReader(String rootVerzeichnis, String path) {
+//        /* Das Objekt root beinhaltet den absoluten Pfad des zu durchsuchenden 
+//        Verzeichnis */
+//        File root = new File(path);
+//        /* Das Array list beinhaltet, dank der Methode listFiles, alle Dateien 
+//        und Verzeichnisse die im zu durchsuchenden Verzeichnis zu finden waren*/
+//        File[] list = root.listFiles();
+//        /* Diese if-Anweisung testet, ob das Array list gefüllt ist oder nicht.
+//        Wenn nicht wird die Methode fileSystemReader hier beendet, ansonsten
+//        läuft sie weiter zur else if-Anweisung */
+//        if (list == null) {
+//            return;
+//        } /* Diese else if-Anweisung überprüft, ob die ArrayList dSsWalk leer ist.
+//        Wenn ja, dann wird der Code in der else if-Anweisung fortgeführt,
+//        ansonsten läuft die Methode weiter zur else-Anweisung */ else if (dSsWalk.isEmpty()) {
+//            /* Ein neues Objekt vom Typ Dateisystem wird mittels eines 
+//            Konstruktors erstellt. Es beinhaltet den Namen des zu durchsuchenden
+//            Verzeichnis, die Typbezeichnung Verzeichnis und als übergeordneten 
+//            Pfad wird null(engl.) als Platzhalter für nichts angegeben. */
+//            Dateisystem dS = new Dateisystem(rootVerzeichnis,
+//                    "Verzeichnis", null);
+//            // Das Objekt wird in die ArrayList dSsWalk gespeichert.
+//            dSsWalk.add(dS);
+//            // Schleife, die jedes Element aus dem Array list durchläuft
+//            for (File list1 : list) {
+//                /* Für das aktuelle Element wird der absolute Pfad an dem 
+//                Trennzeichen "\" zerlegt und jeder Teil wird ein Element des
+//                Arrays pfadsegmente */
+//                String[] pfadsegmente = list1.getAbsolutePath().split(
+//                        Pattern.quote("\\"));
+//                /* In der if-Anweisung wird geprüft, ob es sich bei dem 
+//                aktuellen Element um ein Verzeichnis handelt. Wenn ja, wird der
+//                nachfolgende Code ausgeführt, ansonsten läuft die Methode weiter
+//                zur else-Anweisung */
+//                if (list1.isDirectory()) {
+//                    /* Es wird ein neues Objekt erstellt und mit den Parametern
+//                    Name, Typ, Pfad befüllt */
+//                    dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1],
+//                            "Verzeichnis", rootVerzeichnis);
+//                    // Das Objekt wird in die ArrayList dSsWalk gepackt
+//                    dSsWalk.add(dS);
+//                    /* Hier ruft sich die eigentliche Methode erneut selbst auf,
+//                    da in dem Verzeichnis ja weitere Dateien oder Verzeichnisse
+//                    drin sein können, die erfasst werden müssen */
+//                    fileSystemReader(pfadsegmente[pfadsegmente.length - 1],
+//                            list1.getAbsolutePath());
+//                } /* Ist das aktuelle Element eine Datei wird folgender Code 
+//                ausgeführt */ else {
+//                    /* Es wird ein neues Objekt erstellt und mit den Parametern
+//                    Name, Typ, Pfad befüllt */
+//                    dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1],
+//                            "Datei", rootVerzeichnis);
+//                    // Das Objekt wird in die ArrayList dSsWalk gepackt
+//                    dSsWalk.add(dS);
+//                }
+//            }
+//        } /* Die else-Anweisung wird ausgeführt,wenn weder das Array list noch die
+//        ArrayList dSsWalk leer sind */ else {
+//            // Schleife, die jedes Element aus dem Array list durchläuft
+//            for (File list1 : list) {
+//                /* Für das aktuelle Element wird der absolute Pfad an dem 
+//                Trennzeichen "\" zerlegt und jeder Teil wird ein Element des
+//                Arrays pfadsegmente */
+//                String[] pfadsegmente = list1.getAbsolutePath().split(
+//                        Pattern.quote("\\"));
+//                /* In der if-Anweisung wird geprüft, ob es sich bei dem 
+//                aktuellen Element um ein Verzeichnis handelt. Wenn ja, wird der
+//                nachfolgende Code ausgeführt, ansonsten läuft die Methode weiter
+//                zur else-Anweisung */
+//                if (list1.isDirectory()) {
+//                    /* Es wird ein neues Objekt erstellt und mit den Parametern
+//                    Name, Typ, Pfad befüllt */
+//                    Dateisystem dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Verzeichnis",
+//                            rootVerzeichnis);
+//                    // Das Objekt wird in die ArrayList dSsWalk gepackt
+//                    dSsWalk.add(dS);
+//                    /* Hier ruft sich die eigentliche Methode erneut selbst auf,
+//                    da in dem Verzeichnis ja weitere Dateien oder Verzeichnisse
+//                    drin sein können, die erfasst werden müssen */
+//                    fileSystemReader(pfadsegmente[pfadsegmente.length - 1],
+//                            list1.getAbsolutePath());
+//                } /* Ist das aktuelle Element eine Datei wird folgender Code 
+//                ausgeführt */ else {
+//                    /* Es wird ein neues Objekt erstellt und mit den Parametern
+//                    Name, Typ, Pfad befüllt */
+//                    Dateisystem dS = new Dateisystem(pfadsegmente[pfadsegmente.length - 1], "Datei", rootVerzeichnis);
+//                    // Das Objekt wird in die ArrayList dSsWalk gepackt
+//                    dSsWalk.add(dS);
+//                }
+//            }
+//        }
+//    }
 }
